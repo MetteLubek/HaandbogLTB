@@ -1,0 +1,2066 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Håndbog – Det Lettilgængelige Behandlingstilbud</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;0,700;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal-dark: #1a4a4a;
+    --teal-mid: #2d6a6a;
+    --teal-light: #4a9a9a;
+    --teal-pale: #e8f4f4;
+    --teal-xpale: #f4fafa;
+    --sand: #f7f3ee;
+    --sand-dark: #e8e0d5;
+    --clay: #c4956a;
+    --clay-light: #f0e4d7;
+    --text: #1c2a2a;
+    --text-muted: #5a7070;
+    --sidebar-w: 300px;
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: var(--sand);
+    display: flex;
+    min-height: 100vh;
+    line-height: 1.7;
+  }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    width: var(--sidebar-w);
+    min-width: var(--sidebar-w);
+    background: var(--teal-dark);
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    scrollbar-width: thin;
+    scrollbar-color: var(--teal-mid) transparent;
+  }
+
+  #sidebar::-webkit-scrollbar { width: 4px; }
+  #sidebar::-webkit-scrollbar-track { background: transparent; }
+  #sidebar::-webkit-scrollbar-thumb { background: var(--teal-mid); border-radius: 4px; }
+
+  .sidebar-header {
+    padding: 32px 24px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .sidebar-logo {
+    font-family: 'Fraunces', serif;
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-bottom: 6px;
+  }
+
+  .sidebar-sub {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .nav-section-label {
+    padding: 20px 24px 8px;
+    color: rgba(255,255,255,0.4);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .nav-item {
+    display: block;
+    padding: 9px 24px;
+    color: rgba(255,255,255,0.72);
+    text-decoration: none;
+    font-size: 0.855rem;
+    font-weight: 400;
+    transition: all 0.15s;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+  }
+
+  .nav-item:hover {
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+    border-left-color: var(--clay);
+  }
+
+  .nav-item.active {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border-left-color: var(--clay);
+    font-weight: 500;
+  }
+
+  .nav-item.sub {
+    padding-left: 38px;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.55);
+  }
+
+  .nav-item.sub:hover { color: rgba(255,255,255,0.85); }
+
+  /* ── MAIN ── */
+  #main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 0 80px;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: var(--sand);
+    border-bottom: 1px solid var(--sand-dark);
+    padding: 18px 48px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .breadcrumb {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  .breadcrumb strong { color: var(--teal-dark); font-weight: 600; }
+
+  .search-wrap {
+    margin-left: auto;
+    position: relative;
+  }
+
+  #search {
+    border: 1.5px solid var(--sand-dark);
+    border-radius: 8px;
+    padding: 8px 14px 8px 36px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    background: #fff;
+    color: var(--text);
+    width: 240px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  #search:focus { border-color: var(--teal-light); }
+
+  .search-icon {
+    position: absolute;
+    left: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    display: none;
+    padding: 48px 48px 0;
+    max-width: 900px;
+  }
+
+  .section.active { display: block; }
+
+  /* ── SECTION HEADER ── */
+  .section-hero {
+    background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal-mid) 100%);
+    border-radius: var(--radius);
+    padding: 36px 40px;
+    margin-bottom: 36px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .section-hero::before {
+    content: '';
+    position: absolute;
+    right: -20px;
+    top: -20px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+
+  .section-hero::after {
+    content: '';
+    position: absolute;
+    right: 40px;
+    bottom: -30px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+
+  .section-hero .tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+
+  .section-hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.2;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-hero p {
+    margin-top: 10px;
+    color: rgba(255,255,255,0.75);
+    font-size: 0.92rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+
+  .card h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.25rem;
+    color: var(--teal-dark);
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+
+  .card h3 {
+    font-size: 0.95rem;
+    color: var(--teal-mid);
+    font-weight: 600;
+    margin: 18px 0 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.8rem;
+  }
+
+  .card p { 
+    font-size: 0.9rem;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.75;
+  }
+
+  .card ul, .card ol {
+    padding-left: 20px;
+    margin-bottom: 12px;
+  }
+
+  .card li {
+    font-size: 0.9rem;
+    color: var(--text);
+    margin-bottom: 6px;
+    line-height: 1.7;
+  }
+
+  .card li strong { color: var(--teal-dark); }
+
+  /* ── META ── */
+  .meta-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  .meta-tag {
+    background: var(--teal-pale);
+    color: var(--teal-dark);
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: 0.78rem;
+    font-weight: 500;
+  }
+
+  .meta-tag.clay {
+    background: var(--clay-light);
+    color: #6b4a2a;
+  }
+
+  /* ── ALERT BOXES ── */
+  .alert {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    font-size: 0.88rem;
+    line-height: 1.65;
+    border-left: 4px solid;
+  }
+
+  .alert.info { background: var(--teal-pale); border-color: var(--teal-light); color: var(--teal-dark); }
+  .alert.warn { background: #fef3e8; border-color: var(--clay); color: #5a3a1a; }
+  .alert.danger { background: #fde8e8; border-color: #c0392b; color: #5a1a1a; }
+
+  .alert strong { font-weight: 600; }
+
+  /* ── STEP LIST ── */
+  .steps { counter-reset: step; list-style: none; padding: 0; }
+
+  .steps li {
+    counter-increment: step;
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+  }
+
+  .steps li::before {
+    content: counter(step);
+    min-width: 30px;
+    height: 30px;
+    background: var(--teal-dark);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.78rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .steps li .step-content { flex: 1; }
+  .steps li .step-title { font-weight: 600; font-size: 0.9rem; color: var(--teal-dark); margin-bottom: 4px; }
+  .steps li .step-desc { font-size: 0.87rem; color: var(--text-muted); line-height: 1.65; }
+
+  /* ── ROLE CARDS ── */
+  .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .role-card {
+    background: var(--teal-xpale);
+    border: 1px solid var(--teal-pale);
+    border-radius: 10px;
+    padding: 20px 22px;
+  }
+
+  .role-card h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 0.95rem;
+    color: var(--teal-dark);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+
+  .role-card ul { padding-left: 16px; }
+  .role-card li { font-size: 0.83rem; color: var(--text); margin-bottom: 4px; }
+
+  /* ── INFO TABLE ── */
+  .info-table { width: 100%; border-collapse: collapse; font-size: 0.87rem; }
+
+  .info-table th {
+    background: var(--teal-dark);
+    color: #fff;
+    padding: 10px 16px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 0.82rem;
+    letter-spacing: 0.03em;
+  }
+
+  .info-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--sand-dark);
+    vertical-align: top;
+    line-height: 1.65;
+  }
+
+  .info-table tr:nth-child(even) td { background: var(--sand); }
+  .info-table tr:last-child td { border-bottom: none; }
+
+  /* ── DIVIDER ── */
+  .divider { height: 1px; background: var(--sand-dark); margin: 28px 0; }
+
+  /* ── CHECKLIST ── */
+  .checklist { list-style: none; padding: 0; }
+
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--sand-dark);
+    font-size: 0.88rem;
+  }
+
+  .checklist li:last-child { border-bottom: none; }
+
+  .checklist li::before {
+    content: '☐';
+    color: var(--teal-light);
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── CONTACT INFO ── */
+  .contact-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--teal-pale);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 0.85rem;
+    color: var(--teal-dark);
+    margin: 4px 4px 4px 0;
+  }
+
+  /* ── LINK CHIP ── */
+  a.link-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--clay-light);
+    color: #6b4a2a;
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-decoration: none;
+    margin: 4px 4px 4px 0;
+    border: 1px solid rgba(196,149,106,0.3);
+    transition: background 0.15s;
+  }
+
+  a.link-chip:hover { background: #e8d0bb; }
+
+  /* ── HOME ── */
+  .home-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+
+  .home-card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 24px;
+    border: 1px solid rgba(0,0,0,0.06);
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    text-decoration: none;
+    display: block;
+  }
+
+  .home-card:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+    transform: translateY(-2px);
+    border-color: var(--teal-light);
+  }
+
+  .home-card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: var(--teal-pale);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 14px;
+  }
+
+  .home-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 0.98rem;
+    color: var(--teal-dark);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  .home-card p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+
+  /* ── SCROLLBAR ── */
+  #main::-webkit-scrollbar { width: 5px; }
+  #main::-webkit-scrollbar-track { background: transparent; }
+  #main::-webkit-scrollbar-thumb { background: var(--sand-dark); border-radius: 4px; }
+
+  /* ── HIGHLIGHT ── */
+  mark { background: #fff3b0; border-radius: 3px; padding: 0 2px; }
+
+  @media (max-width: 1100px) {
+    .home-grid { grid-template-columns: repeat(2, 1fr); }
+    .role-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── MOBILE ── */
+  #menu-toggle {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 500;
+    background: var(--teal-dark);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 52px;
+    height: 52px;
+    font-size: 1.4rem;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  }
+
+  #sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 200;
+  }
+
+  @media (max-width: 768px) {
+    body { display: block; }
+
+    #sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 100%;
+      z-index: 300;
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+      width: 280px;
+      min-width: unset;
+    }
+
+    #sidebar.open { transform: translateX(0); }
+
+    #sidebar-overlay.open { display: block; }
+
+    #menu-toggle { display: flex; align-items: center; justify-content: center; }
+
+    #main { width: 100%; }
+
+    .topbar { padding: 14px 16px; }
+
+    .search-wrap { display: none; }
+
+    .section { padding: 16px 16px 0; }
+
+    .section-hero { padding: 22px 20px; }
+    .section-hero h1 { font-size: 1.5rem; }
+
+    .card { padding: 20px 18px; }
+
+    .home-grid { grid-template-columns: 1fr; gap: 12px; }
+    .role-grid { grid-template-columns: 1fr; }
+
+    .info-table { font-size: 0.82rem; }
+    .info-table th, .info-table td { padding: 8px 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="sidebar-overlay" onclick="closeSidebar()"></div>
+<button id="menu-toggle" onclick="toggleSidebar()">☰</button>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">Det Lettilgængelige Behandlingstilbud</div>
+    <div class="sidebar-sub">Norddjurs Kommune · Håndbog</div>
+  </div>
+
+  <div class="nav-section-label">Oversigt</div>
+  <a class="nav-item active" onclick="show('home')">🏠 Forside</a>
+
+  <div class="nav-section-label">Organisation</div>
+  <a class="nav-item" onclick="show('grundlag')">Grundlag &amp; formål</a>
+  <a class="nav-item" onclick="show('organisering')">Organisering</a>
+  <a class="nav-item" onclick="show('roller')">Roller &amp; ansvar</a>
+  <a class="nav-item" onclick="show('kompetence')">Kompetenceudvikling</a>
+  <a class="nav-item" onclick="show('timeregnskab')">Timeregnskab</a>
+
+  <div class="nav-section-label">Instrukser</div>
+  <a class="nav-item" onclick="show('journalforing')">📋 Journalføring</a>
+  <a class="nav-item" onclick="show('samtykke')">✅ Informeret samtykke</a>
+  <a class="nav-item" onclick="show('ansvar-instruks')">🎯 Ansvar &amp; kompetencer</a>
+  <a class="nav-item" onclick="show('forsamtale-instruks')">📞 Forsamtale</a>
+  <a class="nav-item" onclick="show('venteliste')">⏳ Venteliste</a>
+  <a class="nav-item" onclick="show('afslutning-foer-tid')">🔴 Afslutning før tid</a>
+  <a class="nav-item" onclick="show('selvmordsrisiko')">🆘 Selvmordsrisiko &amp; selvskade</a>
+  <a class="nav-item" onclick="show('foraeldre-ikke-orienteret')">👨‍👩‍👧 Forældre ikke orienteret</a>
+
+  <div class="nav-section-label">Sagsforløb</div>
+  <a class="nav-item" onclick="show('maalgrupppe')">Målgruppe</a>
+  <a class="nav-item" onclick="show('borgerrejsen')">Borgerrejsen (oversigt)</a>
+  <a class="nav-item sub" onclick="show('henvendelse')">↳ Henvendelse</a>
+  <a class="nav-item sub" onclick="show('screening')">↳ Screening</a>
+  <a class="nav-item sub" onclick="show('behandling')">↳ Behandlingsforløb</a>
+  <a class="nav-item sub" onclick="show('booster')">↳ Boostersamtale</a>
+  <a class="nav-item sub" onclick="show('opfoelgning')">↳ Opfølgning &amp; afslutning</a>
+
+  <div class="nav-section-label">BUA &amp; Henvisninger</div>
+  <a class="nav-item" onclick="show('elektiv-bua')">Elektiv henvisning til BUA</a>
+  <a class="nav-item" onclick="show('akut-bua')">Akut henvisning til BUA</a>
+  <a class="nav-item" onclick="show('bua-instruks')">Instruks: Henvisning til BUA</a>
+
+  <div class="nav-section-label">Praktisk</div>
+  <a class="nav-item" onclick="show('lokationer')">📍 Behandlingslokationer</a>
+  <a class="nav-item" onclick="show('fagsystemer')">💻 Fagsystemer</a>
+  <a class="nav-item" onclick="show('kommunikation')">📢 Kommunikation</a>
+  <a class="nav-item" onclick="show('underretning')">⚠️ Skærpet underretningspligt</a>
+  <a class="nav-item" onclick="show('afbud')">Afbud &amp; udeblivelse</a>
+  <a class="nav-item" onclick="show('onboarding')">🆕 Onboarding</a>
+  <a class="nav-item" onclick="show('delegation')">📄 Delegationsaftale</a>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+  <div class="topbar">
+    <span class="breadcrumb" id="breadcrumb"><strong>Forside</strong></span>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search" placeholder="Søg i håndbogen… (tryk Enter)" onkeydown="if(event.key==='Enter') searchContent(this.value)">
+    </div>
+  </div>
+
+  <!-- ═══════════════ HOME ═══════════════ -->
+  <div class="section active" id="sec-home">
+    <div style="padding: 48px 48px 0;">
+      <div class="section-hero" style="background: linear-gradient(135deg, #1a4a4a 0%, #2d6a6a 60%, #4a9a9a 100%);">
+        <div class="tag">Norddjurs Kommune</div>
+        <h1>Håndbog<br>Det Lettilgængelige Behandlingstilbud</h1>
+        <p>En samlet guide til arbejdsgange, instrukser og organisering for behandlingsteamet</p>
+      </div>
+
+      <div class="home-grid">
+        <a class="home-card" onclick="show('borgerrejsen')">
+          <div class="home-card-icon">🗺️</div>
+          <h3>Borgerrejsen</h3>
+          <p>Fra henvendelse til afslutning – det samlede sagsforløb</p>
+        </a>
+        <a class="home-card" onclick="show('journalforing')">
+          <div class="home-card-icon">📋</div>
+          <h3>Journalføring</h3>
+          <p>Hvad skal journaliseres og hvornår</p>
+        </a>
+        <a class="home-card" onclick="show('samtykke')">
+          <div class="home-card-icon">✅</div>
+          <h3>Informeret samtykke</h3>
+          <p>Regler for børn under og over 15 år</p>
+        </a>
+        <a class="home-card" onclick="show('roller')">
+          <div class="home-card-icon">👥</div>
+          <h3>Roller &amp; ansvar</h3>
+          <p>Leder, koordinator, behandlere og afklaringsteam</p>
+        </a>
+        <a class="home-card" onclick="show('bua-instruks')">
+          <div class="home-card-icon">🏥</div>
+          <h3>Henvisning til BUA</h3>
+          <p>Elektive og akutte henvisninger til børnepsykiatrien</p>
+        </a>
+        <a class="home-card" onclick="show('fagsystemer')">
+          <div class="home-card-icon">💻</div>
+          <h3>Fagsystemer</h3>
+          <p>JOSA, BørnUngeLiv, MedCom og Front-Desk</p>
+        </a>
+      </div>
+
+      <div class="card">
+        <h2>Akutte kontakter</h2>
+        <div class="alert warn">
+          <strong>Ved akut risiko</strong> (selvmordsrisiko, psykose, fare for andre) – kontakt straks sundhedsfaglig ansvarlig og følg instruksen for selvmordsrisiko &amp; selvskade.
+        </div>
+        <div class="contact-chip">📞 Lægevagten: <strong>70 11 31 31</strong></div>
+        <div class="contact-chip">📞 Psykiatrisk Rådgivningstelefon: <strong>78 47 04 70</strong> (døgnåben)</div>
+        <div class="contact-chip">🆘 Livsfare: <strong>1-1-2</strong></div>
+        <div class="divider"></div>
+        <h3>BUA Rådgivningsenhed – anonym telefonisk sparring</h3>
+        <p>Anvendes ved tvivlsspørgsmål om sværhedsgrad, behandlingseffekt, selvmordsrisiko og målgruppeafklaring. Foregår alle hverdage på bekræftet tidspunkt. Kontakt: <a href="mailto:psy.BUA.raadgivningsenheden@rm.dk" style="color:var(--teal-mid)">psy.BUA.raadgivningsenheden@rm.dk</a> – emnefelt "Lettilgængelig behandling".</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ GRUNDLAG ═══════════════ -->
+  <div class="section" id="sec-grundlag">
+    <div class="section-hero">
+      <div class="tag">Baggrund</div>
+      <h1>Grundlag for etablering</h1>
+      <p>Lovmæssigt og politisk grundlag for det lettilgængelige behandlingstilbud</p>
+    </div>
+
+    <div class="card">
+      <h2>Politisk baggrund</h2>
+      <p>Den 27. september 2022 indgik et bredt flertal i Folketinget aftalen om en 10-årsplan for psykiatrien og mental sundhed. Et af tiltagene er, at alle landets kommuner skal etablere et lettilgængeligt tilbud til børn og unge i psykisk mistrivsel.</p>
+      <p>I maj 2025 indgik Folketinget en ny aftale om en samlet 10-årsplan for psykiatrien. Fra 2026 udvides tilbuddet og der afsættes flere midler nationalt.</p>
+      <div class="meta-row">
+        <span class="meta-tag clay">Aftale 2022</span>
+        <span class="meta-tag clay">Aftale 2025</span>
+        <span class="meta-tag">Sundhedsloven § 126 a</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Den midtjyske samarbejdsmodel</h2>
+      <p>Sundhedsstyregruppen godkendte den 20. september 2024 samarbejdsmodellen for en fælles implementering af det kommunale behandlingstilbud til børn og unge i mistrivsel i Midtjylland.</p>
+      <h3>Elementer i samarbejdsmodellen</h3>
+      <ul>
+        <li>Fælles implementeringsgruppe på tværs af kommuner, region og almen praksis</li>
+        <li>Samarbejde om data</li>
+        <li>Samarbejde om IT og kommunikation</li>
+        <li>Samarbejde om juridiske afklaringer</li>
+        <li>STIME-metoden</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Lovgrundlag</h2>
+      <table class="info-table">
+        <thead><tr><th>Dokument</th><th>Beskrivelse</th></tr></thead>
+        <tbody>
+          <tr><td><strong>VEJ nr. 9434, 21/05/2025</strong></td><td>Vejledning om kommunalt behandlingstilbud til børn og unge med psykisk mistrivsel (§ 126 a)</td></tr>
+          <tr><td><strong>BEK nr. 384, 08/04/2025</strong></td><td>Bekendtgørelse om lettilgængeligt kommunalt behandlingstilbud til børn og unge i psykisk mistrivsel</td></tr>
+          <tr><td><strong>LBK nr. 275, 12/03/2025</strong></td><td>Bekendtgørelse af sundhedsloven</td></tr>
+          <tr><td><strong>BEK nr. 1361, 24/11/2025</strong></td><td>Bekendtgørelse om autoriserede sundhedspersoners patientjournaler</td></tr>
+          <tr><td><strong>BEK nr. 1219, 11/12/2009</strong></td><td>Bekendtgørelse om delegation af forbeholdt sundhedsfaglig virksomhed</td></tr>
+          <tr><td><strong>LBK nr. 1008, 29/08/2024</strong></td><td>Bekendtgørelse af lov om autorisation af sundhedspersoner</td></tr>
+          <tr><td><strong>BEK nr. 1495, 19/11/2025</strong></td><td>Bekendtgørelse om dataindberetning i lettilgængeligt kommunalt behandlingstilbud</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════════ ORGANISERING ═══════════════ -->
+  <div class="section" id="sec-organisering">
+    <div class="section-hero">
+      <div class="tag">Organisation</div>
+      <h1>Organisering</h1>
+      <p>Tilbuddets placering i kommunen og de interne grupper</p>
+    </div>
+
+    <div class="card">
+      <h2>Organisatorisk placering</h2>
+      <p>Behandlingstilbuddet er organisatorisk placeret i <strong>Trivsel og Læring (PPR)</strong> under Forvaltning for Sundhed, Læring og Trivsel.</p>
+      <div class="alert info">Det er en grundlæggende ambition, at tilbuddet betragtes som et "Norddjurs-tilbud" og ikke et PPR-tilbud – en åben dør for borgeren til at møde kommunen med bekymringer for sig selv eller sit barn.</div>
+      <p>Tilbuddet ledes af én af lederne fra Trivsel og Læring (PPR). Den anden leder er sundhedsfaglig ansvarlig.</p>
+    </div>
+
+    <div class="card">
+      <h2>Interne grupper</h2>
+      <div class="role-grid">
+        <div class="role-card">
+          <h4>🔧 Driftsgruppe</h4>
+          <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px;">Mødes 1× ugentligt, 1–1,5 time</p>
+          <ul>
+            <li>Leder af tilbuddet</li>
+            <li>Sundhedsfaglig ansvarlig</li>
+            <li>Koordinator</li>
+            <li>Projektleder</li>
+          </ul>
+        </div>
+        <div class="role-card">
+          <h4>🎯 Styregruppe</h4>
+          <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px;">5 × om året, 2 timer</p>
+          <ul>
+            <li>Leder (formand)</li>
+            <li>Sundhedsfaglig ansvarlig</li>
+            <li>Skole- og dagtilbudschef</li>
+            <li>Børne- og familiechef</li>
+            <li>Afdelingsledere og koordinator</li>
+          </ul>
+        </div>
+        <div class="role-card">
+          <h4>👥 Følgegruppe</h4>
+          <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px;">Endnu ikke nedsat</p>
+          <p style="font-size:0.83rem">Bred interessentgruppe til erfaringsdeling og sparring fra praksis.</p>
+        </div>
+        <div class="role-card">
+          <h4>🩺 Behandlerteamet</h4>
+          <ul>
+            <li>Autoriserede psykologer</li>
+            <li>Ikke-autoriserede under delegation</li>
+            <li>Koordinator</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Løbende kvalitets- og kompetenceudvikling</h2>
+      <table class="info-table">
+        <thead><tr><th>Aktivitet</th><th>Hyppighed</th><th>Indhold</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Teammøder</strong></td><td>2× om måneden, 1,5 t</td><td>Sparring, videndeling, koordinering. Leder og sundhedsfaglig ansvarlig deltager 1× md.</td></tr>
+          <tr><td><strong>Teamformiddage</strong></td><td>5× om året, 4 timer</td><td>Faglige problemstillinger, lovgivning, procedurer, teamudvikling</td></tr>
+          <tr><td><strong>Ekstern supervision</strong></td><td>6× om året, 4 timer</td><td>Autoriseret ekstern psykolog – cases, faglige input, psykoedukation</td></tr>
+          <tr><td><strong>BUA Rådgivningsenhed</strong></td><td>Efter behov</td><td>Anonym telefonisk sparring om enkeltsager</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════════ ROLLER ═══════════════ -->
+  <div class="section" id="sec-roller">
+    <div class="section-hero">
+      <div class="tag">Instruks</div>
+      <h1>Roller, ansvar og delegation</h1>
+      <p>Ikrafttrædelse: 24.03.2026 · Senest ajourført: 29.04.2026</p>
+    </div>
+
+    <div class="card">
+      <h2>Leder (ikke-autoriseret)</h2>
+      <h3>Ansvar</h3>
+      <ul>
+        <li>Sikre overholdelse af sundhedsloven og § 126 a</li>
+        <li>Sikre tilstrækkelige kompetencer og struktur for supervision</li>
+        <li>Sikre tydelige, opdaterede instrukser</li>
+        <li>Sikre tilknyttet autoriseret sundhedsperson</li>
+        <li>Sikre delegation og instrukser er dokumenteret</li>
+      </ul>
+      <div class="alert warn"><strong>Afgrænsning:</strong> Har ikke sundhedsfagligt behandlingsansvar og kan ikke delegere sundhedsfaglige opgaver.</div>
+    </div>
+
+    <div class="card">
+      <h2>Sundhedsfaglig ansvarlig (klinisk psykolog)</h2>
+      <h3>Ansvar</h3>
+      <ul>
+        <li>Det overordnede sundhedsfaglige ansvar for behandlingen</li>
+        <li>Faglig kvalitet, patientsikkerhed og forsvarlighed</li>
+        <li>Fastlæggelse af behandlingsrammer og faglige retningslinjer</li>
+        <li>Journalføring i overensstemmelse med gældende regler</li>
+        <li>Delegation til ikke-autoriserede medarbejdere</li>
+        <li>Stikprøvekontrol af journaler og praksis</li>
+        <li>Indgriben ved faglig tvivl, utilsigtede hændelser eller ændrede risici</li>
+      </ul>
+      <h3>Om delegation</h3>
+      <ul>
+        <li>Delegation gives på baggrund af konkret kompetencevurdering</li>
+        <li>Delegation er skriftlig, afgrænset og tidsmæssigt gældende</li>
+        <li>Delegation kan justeres eller trækkes tilbage</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Behandlere</h2>
+      <p><strong>Autoriserede psykologer</strong> arbejder med selvstændigt sundhedsfagligt ansvar inden for eget behandlingsforløb.</p>
+      <p><strong>Ikke-autoriserede</strong> udfører konkrete behandlingsopgaver under delegation fra autoriseret sundhedsperson.</p>
+      <h3>Fælles ansvar</h3>
+      <ul>
+        <li>Faglig vurdering, planlægning og gennemførelse af behandling</li>
+        <li>Journalføring efter gældende instruks</li>
+        <li>Inddragelse af faglig sparring og supervision</li>
+        <li>Inddragelse af sundhedsfaglig ansvarlig ved faglig tvivl, utilsigtede hændelser og principielle afklaringer</li>
+      </ul>
+      <div class="alert warn"><strong>Ved akut risiko</strong> (selvmordsrisiko, psykose, fare for andre) – kontakt straks sundhedsfaglig ansvarlig.</div>
+    </div>
+
+    <div class="card">
+      <h2>Koordinator</h2>
+      <ul>
+        <li>Praktisk planlægning og koordinering af teamets mødeaktivitet</li>
+        <li>Tildeling af behandlingsopgaver til behandlerne</li>
+        <li>Koordinering af kompetenceudvikling og supervision</li>
+        <li>Deltagelse i driftsgruppe og styregruppe</li>
+        <li>Bindeled mellem ledelse og behandlere</li>
+        <li>Afholder vidensoplæg og "charmerende" for samarbejdspartnere</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Afklaringsteamet</h2>
+      <div class="alert info">Det er en forudsætning for at indgå i afklaringsteamet, at man <strong>også</strong> er certificeret STIME-behandler og udfører behandlingsopgaver.</div>
+      <ul>
+        <li>Indhente informeret samtykke forud for screening og behandlingsopstart</li>
+        <li>Gennemføre forsamtaler og screeningssamtaler (skabeloner i JOSA)</li>
+        <li>Vurdere inklusion/eksklusionskriterier</li>
+        <li>Anvende SDQ og evt. supplerende spørgeskemaer</li>
+        <li>Koordinere videre guidning til andre tilbud</li>
+        <li>Dokumentere vurdering, beslutning og begrundelse</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══════════════ KOMPETENCE ═══════════════ -->
+  <div class="section" id="sec-kompetence">
+    <div class="section-hero">
+      <div class="tag">Uddannelse</div>
+      <h1>Kompetenceudvikling</h1>
+      <p>STIME-uddannelse og løbende faglig udvikling</p>
+    </div>
+
+    <div class="card">
+      <h2>STIME-uddannelse</h2>
+      <p>Behandlere uddannes med udgangspunkt i STIMEs spor:</p>
+      <ul>
+        <li>Når bekymring og tristhed fylder for meget</li>
+        <li>Når gentagne tanker og handlinger tager styringen</li>
+        <li>Når svære følelser fører til selvskade</li>
+        <li>Når tanker om krop og mad fylder for meget</li>
+      </ul>
+      <div class="alert info"><strong>Note:</strong> Det 5. STIME-spor ("Når uro, opmærksomhed eller impulsivitet er en udfordring") udbydes ikke, da der er et lignende tilbud (NFPP) andet sted i kommunen.</div>
+      <h3>Uddannelsesforløb</h3>
+      <ul>
+        <li>Første STIME-spor: 4 moduler, i alt 7 dages varighed</li>
+        <li>Efterfølgende spor: 1 modul (2 dage)</li>
+        <li>Supervision til certificering: 10 × 2,5 timer med behandlere fra andre kommuner – krav om 4 cases fra minimum 2 sager</li>
+        <li>Varighed: ca. 10 måneder, afvikles af BUA (typisk i Aarhus)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Ambitioner for teamet</h2>
+      <ul>
+        <li>Hvert STIME-spor kan tilbydes af <strong>flere</strong> behandlere</li>
+        <li>Hver behandler certificeret i <strong>2 eller flere</strong> STIME-spor</li>
+        <li>Hver behandler gennemfører kun <strong>1 certificering</strong> ad gangen</li>
+      </ul>
+      <p>Dette øger robustheden og fleksibiliteten i teamet.</p>
+    </div>
+
+    <div class="card">
+      <h2>Psykopatologi i videoformat (BUA)</h2>
+      <p>BUA har udarbejdet læringsvideoer med basisindføring i psykopatologi og symptombillede inden for børne- og ungdomspsykiatriske lidelser:</p>
+      <ul>
+        <li>ICD-10 og ICD-11</li>
+        <li>Spiseforstyrrelser, selvskade, skizofreni</li>
+        <li>Angst og depression</li>
+        <li>Personlighedsforstyrrelser, tics/tourettes</li>
+        <li>Autismespektrumforstyrrelser, OCD</li>
+        <li>ADHD</li>
+      </ul>
+      <a href="https://rm.plan2learn.dk/kursusvalg.aspx?id=115595" class="link-chip" target="_blank">🎥 Se videoerne på Region Midt</a>
+    </div>
+  </div>
+
+  <!-- ═══════════════ TIMEREGNSKAB ═══════════════ -->
+  <div class="section" id="sec-timeregnskab">
+    <div class="section-hero">
+      <div class="tag">Planlægning</div>
+      <h1>Timeregnskab</h1>
+      <p>Individuel timeopgørelse for behandlerne</p>
+    </div>
+
+    <div class="card">
+      <h2>Formål med timeregnskabet</h2>
+      <p>Timeregnskabet forventningsafstemmer mellem ledelse, koordinator og behandlere om, hvor mange borgere den enkelte behandler kan tilse. Det giver mulighed for løbende dialog om forberedelse og efterbearbejdning.</p>
+      <p><strong>Dokument:</strong> 2111/25 i Acadre-sagen: 24/7596</p>
+    </div>
+
+    <div class="card">
+      <h2>Eksempel på timeberegning</h2>
+      <table class="info-table">
+        <thead><tr><th>Post</th><th>Timer/uge</th></tr></thead>
+        <tbody>
+          <tr><td>Samlet tildeling</td><td><strong>12 timer</strong></td></tr>
+          <tr><td>Organisatorisk tid (supervision, møder, formiddage, 6 screeningssamtaler/år)</td><td>2,0 timer</td></tr>
+          <tr><td>STIME-uddannelse</td><td>2,9 timer</td></tr>
+          <tr><td>Administrativ tid (10% af timetallet)</td><td>1,2 timer</td></tr>
+          <tr><td><strong>Resterende til behandlingsopgaver (forår 2026)</strong></td><td><strong>~111 timer</strong></td></tr>
+        </tbody>
+      </table>
+      <div class="alert info">Med 20 timer pr. behandlingsopgave kan behandleren varetage ca. <strong>5,6 sager</strong> pr. halvår – svarende til ca. <strong>2,8 igangværende sager</strong> ad gangen (da én sag varer ca. 3 måneder).</div>
+    </div>
+
+    <div class="card">
+      <h2>Sagsoverblik</h2>
+      <p>Behandler er ansvarlig for at ajourføre et sagsoverblik nederst i timeregnskabet med:</p>
+      <ul>
+        <li>Patientens fornavn</li>
+        <li>Opstartsdato for behandlingen</li>
+        <li>Dato for afslutning (inden boostersamtale)</li>
+      </ul>
+      <p>En sag betragtes som afsluttet, når den sidste samtale er afviklet og man afventer boostersamtale.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════ JOURNALFØRING ═══════════════ -->
+  <div class="section" id="sec-journalforing">
+    <div class="section-hero">
+      <div class="tag">Instruks · Ikrafttrædelse 01.01.2026</div>
+      <h1>Journalføring</h1>
+      <p>Senest ajourført: 29.04.2026 · Udarbejdet af: Jacob Mohr Jensen</p>
+    </div>
+
+    <div class="card">
+      <h2>Grundregler for journalen</h2>
+      <ul>
+        <li>Kort og præcis – respektfuldt skrevet, så det tåler at læses af barn/forældre</li>
+        <li>Føres <strong>samme dag</strong> – undtagelsesvist senest førstkommende arbejdsdag</li>
+        <li>Føres ved <strong>hver aktivitet</strong>, kontakt og handling med betydning for behandlingen</li>
+        <li>Giver et retvisende billede af borgerens forløb</li>
+      </ul>
+      <div class="alert info"><strong>Huskeregel:</strong> Hvad ville du selv gerne vide, hvis du skulle overtage behandlingen af patienten? En ny kollega skal kunne overtage sagen ved at læse journalen.</div>
+    </div>
+
+    <div class="card">
+      <h2>Hvad journaliseres ved forsamtale / screening</h2>
+      <ul>
+        <li>Informeret samtykke (screening, behandling, indhente/dele information, henvisning til BUA)</li>
+        <li>Indikation – borgerens egen beskrivelse af årsag til henvendelsen</li>
+        <li>Symptomer, problemstilling og funktionsniveau</li>
+        <li>Varighed og debut</li>
+        <li>Tidligere behandling (hvis relevant)</li>
+        <li>Udsendte spørgeskemaer</li>
+        <li>Valg af behandling – behandlingsplan</li>
+        <li>Guidning til andre tilbud</li>
+        <li>Begrundelse, hvis borgeren <em>ikke</em> tilbydes behandling</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Hvad journaliseres i behandlingsforløbet</h2>
+      <ul>
+        <li>Status (aktuel tilstand/trivsel) og respons på behandlingen</li>
+        <li>Objektive observationer</li>
+        <li>Faglige refleksioner og vurderinger (tydeligt markeret)</li>
+        <li>Beslutninger, konklusioner og næste skridt</li>
+        <li>Overvejelser om inddragelse af netværk</li>
+        <li>Justeringer og skift i behandlingsplan</li>
+        <li>Risikovurdering (hvis relevant)</li>
+        <li>Alle aktiviteter inkl. kollegial sparring og supervision (konklusion kort)</li>
+        <li>Evaluering og afslutning</li>
+        <li>Udsendte spørgeskemaer</li>
+        <li>Informeret samtykke til indhente/dele information og henvisning til BUA</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Ledelsesmæssigt ansvar</h2>
+      <ul>
+        <li>Ledelsen sikrer, at medarbejderne kender og anvender instruksen</li>
+        <li>Der føres løbende stikprøvekontrol af journaler</li>
+        <li>Instruksen revideres minimum én gang årligt</li>
+      </ul>
+      <h3>Retsgrundlag</h3>
+      <ul>
+        <li>VEJ nr. 9434 af 21/05/2025 (§ 126 a) – afsnit 6, 8 og 9.5</li>
+        <li>VEJ nr. 9001 af 20/11/2000 om udfærdigelse af instrukser</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SAMTYKKE ═══════════════ -->
+  <div class="section" id="sec-samtykke">
+    <div class="section-hero">
+      <div class="tag">Instruks · Ikrafttrædelse 01.01.2026</div>
+      <h1>Informeret samtykke</h1>
+      <p>Senest ajourført: 29.04.2026 · Udarbejdet af: Jacob Mohr Jensen</p>
+    </div>
+
+    <div class="card">
+      <h2>Børn under 15 år</h2>
+      <p>Informeret samtykke gives af forældre eller værge. Barnet skal informeres og inddrages på en alderssvarende måde.</p>
+      <h3>Delt forældremyndighed</h3>
+      <p>Som udgangspunkt er samtykke fra <strong>én</strong> forældremyndighedsindehaver nok (dog ikke ved henvisning til BUA). Medarbejderen spørger, om den anden forælder også er informeret og kan give samtykke.</p>
+      <div class="alert warn"><strong>NB:</strong> Hvis medarbejderen har kendskab til, at den anden forælder <em>ikke</em> er enig eller informeret, kræves samtykke fra begge.</div>
+    </div>
+
+    <div class="card">
+      <h2>Unge over 15 år</h2>
+      <p>Den unge over 15 år kan selv give informeret samtykke. Forældrene skal stadig have relevant information om behandlingen.</p>
+      <p>Den unge kan insistere på ikke at få involveret forældre, hvis medarbejderen vurderer, at den unge forstår konsekvenserne. I tilbuddet opfordres altid til forældreinvolvering, medmindre det er til skade.</p>
+      <div class="alert warn"><strong>Særligt ved selvskade og spiseforstyrrelser:</strong> Forældremyndighedsindehaverne skal i udgangspunktet have viden om den unges helbred, så de kan udøve omsorgspligten.</div>
+    </div>
+
+    <div class="card">
+      <h2>Hvornår indhentes samtykke</h2>
+      <ol class="steps">
+        <li>
+          <div class="step-content">
+            <div class="step-title">Forud for screeningssamtale</div>
+            <div class="step-desc">Indhentes af afklaringsteamet</div>
+          </div>
+        </li>
+        <li>
+          <div class="step-content">
+            <div class="step-title">Forud for opstart af behandlingsforløb</div>
+            <div class="step-desc">Indhentes af afklaringsteamet</div>
+          </div>
+        </li>
+      </ol>
+      <div class="alert info"><strong>NB:</strong> Ved deling af information med samarbejdspartnere ud over tilbuddet skal der også indhentes samtykke. <br><strong>NB:</strong> Ved henvisning til BUA skal begge forældremyndighedsindehavere give samtykke.</div>
+    </div>
+
+    <div class="card">
+      <h2>Journalisering af informeret samtykke</h2>
+      <p>Et informeret samtykke består af to elementer – begge dokumenteres i journalen:</p>
+      <ul>
+        <li><strong>Informationen</strong> – hvad er der informeret om</li>
+        <li><strong>Samtykket</strong> – mundtligt eller skriftligt</li>
+      </ul>
+      <h3>Opgavetyper i JOSA</h3>
+      <ul>
+        <li><em>Lovpligtigt samtykke til det videre forløb</em> – brug standardtekst til behandlingsforløb og BUA-henvisning</li>
+        <li><em>Samtykke til tværgående samarbejde</em> – noter hvem borgeren har givet samtykke til og med hvilket formål</li>
+      </ul>
+      <p>Det skal altid dokumenteres: hvem gav samtykke, hvad der gives samtykke til, hvornår og hvordan. Et samtykke kan tilbagetrækkes til enhver tid.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════ ANSVAR INSTRUKS ═══════════════ -->
+  <div class="section" id="sec-ansvar-instruks">
+    <div class="section-hero">
+      <div class="tag">Instruks · Ikrafttrædelse 24.03.2026</div>
+      <h1>Ansvar &amp; Kompetencer</h1>
+      <p>Senest ajourført: 29.04.2026</p>
+    </div>
+    <div class="card">
+      <div class="alert info">Se siden <strong>"Roller, ansvar og delegation"</strong> for den fulde beskrivelse af ansvar for alle roller. Denne instruks opsummerer kerneprincipperne.</div>
+      <h2>Overordnede principper</h2>
+      <ul>
+        <li>Hvert STIME-spor kan tilbydes af flere behandlere</li>
+        <li>Hver behandler certificeret i 2 eller flere STIME-spor</li>
+        <li>Behandler udfører kun behandling inden for certificerede STIME-spor</li>
+        <li>Ledelsen laver individuel vurdering af hvem der kan udføre individuelt tilrettelagte forløb</li>
+      </ul>
+      <div class="alert danger"><strong>Akut risiko:</strong> Ved selvmordsrisiko, psykose eller fare for andre – straks kontakt til sundhedsfaglig ansvarlig. Medarbejdere har skærpet underretningspligt jf. Barnets Lov §133.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ MÅLGRUPPE ═══════════════ -->
+  <div class="section" id="sec-maalgrupppe">
+    <div class="section-hero">
+      <div class="tag">Tilbud</div>
+      <h1>Tilbuddets målgruppe</h1>
+    </div>
+
+    <div class="card">
+      <h2>Inden for målgruppen</h2>
+      <p>Børn og unge fra <strong>børnehaveklasse til og med det 17. år</strong> med:</p>
+      <ul>
+        <li>Symptomer på psykisk mistrivsel</li>
+        <li>Let til moderat nedsat funktionsniveau</li>
+        <li>Udfordringer i hverdagen grundet fx bekymring, tristhed, forstyrrende tanker om krop/mad, selvskade, styrende tanker/handlinger eller lignende</li>
+        <li>Forventes at kunne profitere af et afgrænset behandlingsforløb og er motiveret</li>
+        <li>Bopæl i Norddjurs Kommune</li>
+      </ul>
+      <div class="alert info">Unge der har påbegyndt behandling som 17-årige, bør efter konkret vurdering kunne afslutte relevant behandling også efter de er fyldt 18 år.</div>
+    </div>
+
+    <div class="card">
+      <h2>Uden for målgruppen</h2>
+      <ul>
+        <li>Børn og unge med et aktivt behandlingsforløb i BUA</li>
+        <li>Børn og unge med betydelige kognitive vanskeligheder</li>
+        <li>Børn og unge med misbrug (vurderes individuelt)</li>
+        <li>Almindelige forbigående reaktioner på livsomstændigheder</li>
+      </ul>
+      <div class="alert warn"><strong>Rusmiddelbrug:</strong> Vurderes individuelt. Behandlingsforløb kan ske i samarbejde med rusmiddelcentret. Børne- og Familieområdet kan referere til behandlingsgaranti jf. Barnets Lov § 33.</div>
+    </div>
+
+    <div class="card">
+      <h2>Sammenhæng til andre tilbud</h2>
+      <table class="info-table">
+        <thead><tr><th>Trin</th><th>Beskrivelse</th><th>Eksempler</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Trin 1</strong></td><td>Tidlig indsats</td><td>Skole, PPR, FTI</td></tr>
+          <tr><td><strong>Trin 2</strong></td><td>Manualbaserede behandlingsforløb (let-moderat)</td><td>Det Lettilgængelige Behandlingstilbud</td></tr>
+          <tr><td><strong>Trin 3</strong></td><td>Udredning, diagnostik og behandling</td><td>Børne- og ungdomspsykiatrien (BUA)</td></tr>
+          <tr><td><strong>Trin 4</strong></td><td>Opfølgning</td><td>Løbende</td></tr>
+        </tbody>
+      </table>
+      <p>Tilbuddet kan <em>guide</em> til andre tilbud i kommunen, men kan ikke <em>visitere</em> til andre tilbud end sine egne.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════ BORGERREJSEN ═══════════════ -->
+  <div class="section" id="sec-borgerrejsen">
+    <div class="section-hero">
+      <div class="tag">Sagsforløb</div>
+      <h1>Borgerrejsen</h1>
+      <p>Det samlede forløb fra henvendelse til afslutning</p>
+    </div>
+
+    <div class="card">
+      <h2>Sagsforløbets faser</h2>
+      <ol class="steps">
+        <li><div class="step-content"><div class="step-title">Henvendelse</div><div class="step-desc">Borgeren henvender sig via hjemmeside eller telefon. Ingen henvisning kræves (åben-dør-princip).</div></div></li>
+        <li><div class="step-content"><div class="step-title">Forsamtale (telefonisk)</div><div class="step-desc">Afklaringsteamet ringer op inden for 14 dage. 30 min samtale + 30 min journalisering.</div></div></li>
+        <li><div class="step-content"><div class="step-title">Spørgeskemaer</div><div class="step-desc">SDQ + evt. sporspecifikke spørgeskemaer udsendes via BørnUngeLiv forud for screeningssamtale.</div></div></li>
+        <li><div class="step-content"><div class="step-title">Screeningssamtale</div><div class="step-desc">Fysisk eller virtuelt. Afholdes inden for 30 dage efter henvendelse. 1,5 time inkl. forberedelse og journalisering.</div></div></li>
+        <li><div class="step-content"><div class="step-title">Behandlingsforløb</div><div class="step-desc">Igangsættes inden for 30 dage efter screeningssamtale. Manualbaseret (STIME) eller individuelt tilrettelagt.</div></div></li>
+        <li><div class="step-content"><div class="step-title">Boostersamtale</div><div class="step-desc">Ca. 4 uger efter afsluttet behandling. SDQ og evaluering drøftes.</div></div></li>
+        <li><div class="step-content"><div class="step-title">Opfølgning &amp; afslutning</div><div class="step-desc">Praktiserende læge orienteres via MedCom. Sagen lukkes i BørnUngeLiv og JOSA.</div></div></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ═══════════════ HENVENDELSE ═══════════════ -->
+  <div class="section" id="sec-henvendelse">
+    <div class="section-hero">
+      <div class="tag">Sagsforløb · Trin 1</div>
+      <h1>Henvendelse</h1>
+    </div>
+
+    <div class="card">
+      <h2>Åben dør</h2>
+      <p>Børn, unge og forældre kan henvende sig <strong>uden henvisning eller visitation</strong>, også selvom de tidligere har haft et forløb.</p>
+      <ul>
+        <li>Book forsamtale online på hjemmesiden</li>
+        <li>Ring til behandlingstilbuddets telefonnummer</li>
+      </ul>
+      <p>Unge over 15 år kan kontakte tilbuddet uden forældrenes samtykke. Borgere bør som udgangspunkt kunne booke forsamtale inden for <strong>14 dage</strong>.</p>
+    </div>
+
+    <div class="card">
+      <h2>Henvendelse fra læge via MedCom</h2>
+      <ol class="steps">
+        <li><div class="step-content"><div class="step-title">Læge sender MedCom-korrespondance</div><div class="step-desc">Med samtykke fra borgeren</div></div></li>
+        <li><div class="step-content"><div class="step-title">Administrativ medarbejder tjekker dagligt</div><div class="step-desc">Journaliserer henvendelsen i JOSA og opretter sag om nødvendigt</div></div></li>
+        <li><div class="step-content"><div class="step-title">Koordinator adviseres</div><div class="step-desc">Kvitterer til praktiserende læge for henvendelsen</div></div></li>
+        <li><div class="step-content"><div class="step-title">Afklaringsteam kontakter borger</div><div class="step-desc">Med henblik på booking af forsamtale</div></div></li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h2>Henvendelse fra fagperson</h2>
+      <ol class="steps">
+        <li><div class="step-content"><div class="step-title">Fagperson indhenter samtykke</div><div class="step-desc">Fra forældre eller ung over 15 år til at kontakte afklaringsteamet</div></div></li>
+        <li><div class="step-content"><div class="step-title">Fagperson og afklaringsteam drøfter sagen</div><div class="step-desc">Hjælper forældre/unge med at booke forsamtale</div></div></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SCREENING ═══════════════ -->
+  <div class="section" id="sec-screening">
+    <div class="section-hero">
+      <div class="tag">Sagsforløb · Trin 3-4</div>
+      <h1>Forsamtale &amp; Screening</h1>
+    </div>
+
+    <div class="card">
+      <h2>Forsamtalen</h2>
+      <table class="info-table">
+        <tr><td><strong>Hvem</strong></td><td>Afklaringsteamet</td></tr>
+        <tr><td><strong>Form</strong></td><td>Telefonisk</td></tr>
+        <tr><td><strong>Tid</strong></td><td>30 min samtale + 30 min journalisering</td></tr>
+        <tr><td><strong>Serviceniveau</strong></td><td>Inden for 14 dage fra henvendelse</td></tr>
+        <tr><td><strong>Princip</strong></td><td>Ingen afvisning uden anvisning</td></tr>
+      </table>
+      <h3>Formål</h3>
+      <ul>
+        <li>Er borgeren i målgruppen?</li>
+        <li>Skal borgeren guides til anden indsats?</li>
+        <li>Er der ikke behov for indsats (fx forbigående reaktion)?</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Screeningssamtalen</h2>
+      <table class="info-table">
+        <tr><td><strong>Hvem</strong></td><td>Afklaringsteamet – barnet/den unge deltager</td></tr>
+        <tr><td><strong>Form</strong></td><td>Fysisk eller virtuelt (Teams)</td></tr>
+        <tr><td><strong>Tid</strong></td><td>1,5 time inkl. forberedelse og journalisering</td></tr>
+        <tr><td><strong>Serviceniveau</strong></td><td>Inden for 30 dage fra henvendelse</td></tr>
+      </table>
+      <h3>Spørgeskemaer der anvendes</h3>
+      <ul>
+        <li><strong>SDQ</strong> – alle sager (opstart og afslutning)</li>
+        <li><strong>ADHD-RS</strong> – ved mistanke om ADHD</li>
+        <li><strong>RCADS</strong> – angst og depression</li>
+        <li><strong>EAT26</strong> – spiseforstyrrelse</li>
+        <li><strong>DERS16</strong> – emotionsregulering</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══════════════ BEHANDLING ═══════════════ -->
+  <div class="section" id="sec-behandling">
+    <div class="section-hero">
+      <div class="tag">Sagsforløb · Trin 5</div>
+      <h1>Behandlingsforløb</h1>
+    </div>
+
+    <div class="card">
+      <h2>Behandlingstilbud i Norddjurs Kommune</h2>
+      <ul>
+        <li>Individuelle samtaler</li>
+        <li>Mestringsluppen (gruppeforløb for forældre og børn med udviklings- og opmærksomhedsforstyrrelse)</li>
+        <li>STIME-spor: "Når svære følelser fører til selvskade"</li>
+        <li>STIME-spor: "Når bekymring eller tristhed fylder for meget"</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Serviceniveau</h2>
+      <table class="info-table">
+        <tr><td><strong>Opstart</strong></td><td>Inden for 30 dage efter screeningssamtale</td></tr>
+        <tr><td><strong>Individuelt tilrettelagt</strong></td><td>5 samtaler + mulighed for op til 5 yderligere</td></tr>
+        <tr><td><strong>Grundlag</strong></td><td>Evidensbaserede/dokumenterede indsatser og manualer (primært STIME)</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Principper for behandlingen</h2>
+      <ul>
+        <li>Holistisk syn – samtalerne er kun én del af behandlingen</li>
+        <li>Familien inkluderes altid – forældrene holdes ajour</li>
+        <li>Netværket aktiveres systematisk (skole, PPR, civilsamfund)</li>
+        <li>Individuelt tilrettelagte forløb bruger bærende principper fra STIME</li>
+        <li>Afvigelse fra manual drøftes med sundhedsfaglig ansvarlig</li>
+      </ul>
+      <div class="alert info">Enkelte udfordringer (fx selvskade) behandles kun individuelt grundet risiko for social spredning. Mildere angstlidelser kan behandles i grupper.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ BOOSTER ═══════════════ -->
+  <div class="section" id="sec-booster">
+    <div class="section-hero">
+      <div class="tag">Sagsforløb · Trin 6</div>
+      <h1>Boostersamtale</h1>
+    </div>
+
+    <div class="card">
+      <h2>Om boostersamtalen</h2>
+      <p>Selv om psykisk mistrivsel vurderes aftaget, aftales <strong>altid</strong> en eller flere opfølgende samtaler med det formål at:</p>
+      <ul>
+        <li>Forebygge tilbagefald tidligt</li>
+        <li>Genopfriske indholdet af behandlingen ved behov</li>
+      </ul>
+      <p>Boostersamtalen afholdes typisk ca. <strong>en måned</strong> efter afsluttet behandling. Kan ske telefonisk eller virtuelt.</p>
+      <div class="alert info">SDQ og evalueringsspørgeskemaer sendes ud <strong>efter sidste samtale og inden booster</strong> via BørnUngeLiv. SDQen drøftes med borgeren ved boostersamtalen.</div>
+      <p>Barn, ung og familie opfordres til at tage kontakt ved forværring i den mellemliggende periode og efter endt forløb.</p>
+      <p>Beslutninger om afslutning, viderehenvisning eller guidning til anden indsats aftales altid <strong>mellem behandler og familien</strong>.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════ OPFØLGNING ═══════════════ -->
+  <div class="section" id="sec-opfoelgning">
+    <div class="section-hero">
+      <div class="tag">Sagsforløb · Trin 7</div>
+      <h1>Opfølgning &amp; afslutning</h1>
+    </div>
+
+    <div class="card">
+      <h2>Er nuværende behandling den rette?</h2>
+      <p>Behandleren er forpligtet til løbende at forholde sig til, om behandlingen fortsat er den rette, eller om borgeren ville profitere af en anden indsats. Faglig vurdering af behandlingsplanens relevans og borgerens motivation sker løbende.</p>
+    </div>
+
+    <div class="card">
+      <h2>Netværksinddragelse</h2>
+      <p>Behandleren har ansvar for systematisk at vurdere, hvilke dele af den unges netværk der med fordel kan aktiveres:</p>
+      <ul>
+        <li>Forældre, lærere, ungdomskonsulenter, bedsteforældre</li>
+        <li>PPR, FTI, BF, civilsamfund, UU</li>
+      </ul>
+      <p>Inddragelse kan ske én/flere gange og på alle tidspunkter af forløbet. Ofte vil inddragelse af skole og PPR være minimum.</p>
+    </div>
+
+    <div class="card">
+      <h2>Afslutning af forløb</h2>
+      <h3>Forløb med mindst 3 samtaler</h3>
+      <ul>
+        <li>SDQ og evalueringsspørgeskema udsendes via BørnUngeLiv efter sidste samtale (inden booster)</li>
+        <li>Praktiserende læge orienteres om afslutning via MedCom</li>
+        <li>Sagen lukkes i BørnUngeLiv og JOSA</li>
+      </ul>
+      <h3>Forløb afsluttet inden 3 samtaler</h3>
+      <p>Behandleren giver besked til koordinator og sundhedsfaglig ansvarlig, som kontakter familien telefonisk for mundtlig evaluering.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════ ELEKTIV BUA ═══════════════ -->
+  <div class="section" id="sec-elektiv-bua">
+    <div class="section-hero">
+      <div class="tag">BUA</div>
+      <h1>Elektiv henvisning til BUA</h1>
+    </div>
+
+    <div class="card">
+      <h2>Hvornår overvejes elektiv henvisning</h2>
+      <p>Det lettilgængelige behandlingstilbud er primært et tilbud <em>om behandling</em>. Elektiv henvisning til BUA overvejes, når det i forbindelse med et behandlingsforløb vurderes, at borgeren vil profitere af udredning/behandling på sygehus.</p>
+      <ul>
+        <li>Manglende effekt af kommunal indsats</li>
+        <li>Moderate/svære symptomer</li>
+        <li>Betydelig funktionsnedsættelse</li>
+        <li>Mistanke om psykisk lidelse eller udviklingsforstyrrelse</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Vigtige principper</h2>
+      <div class="alert info">Rådgivningsenheden hos BUA anvendes ALTID forud for en elektiv henvisning. Begge forældremyndighedsindehavere skal give samtykke.</div>
+      <ul>
+        <li>Barnet/den unge kan fortsat følges i tilbuddet, mens familien venter på BUA</li>
+        <li>Der er ikke krav om PPV (pædagogisk-psykologisk vurdering) ved henvisning</li>
+        <li>Henvisning sker via den kommunale henvisningsformular</li>
+      </ul>
+      <a href="https://www.fagperson.sundhed.rm.dk/til-ansatte-og-samarbejdspartnere/psykiatri/henvisning-og-visitation/psykiatriens-centrale-visitation/elektive-henvisninger---0-17-ar/" class="link-chip" target="_blank">🔗 BUAs informationer om elektive henvisninger</a>
+    </div>
+
+    <div class="card">
+      <h2>Psykiatriens Centrale Visitation (PCV)</h2>
+      <p>PCV lægger vægt på, at der er afprøvet en kommunal indsats inden henvisning. En screeningssamtale er tilstrækkeligt som dokumentation.</p>
+      <p>Returnerede henvisninger sendes med henblik på uddybning. Alle returneringer vurderes af en speciallæge i psykiatri.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════ AKUT BUA ═══════════════ -->
+  <div class="section" id="sec-akut-bua">
+    <div class="section-hero">
+      <div class="tag">Akut</div>
+      <h1>Akut henvisning til BUA</h1>
+    </div>
+
+    <div class="card">
+      <h2>Akutte kontaktmuligheder</h2>
+      <div class="alert danger"><strong>Livsfare:</strong> Ring 1-1-2</div>
+      <div class="contact-chip">📞 Lægevagten: <strong>70 11 31 31</strong></div>
+      <div class="contact-chip">📞 Psykiatrisk Rådgivningstelefon: <strong>78 47 04 70</strong> (døgnåben, anonym)</div>
+    </div>
+
+    <div class="card">
+      <h2>BUA-afdelinger i Region Midtjylland</h2>
+      <table class="info-table">
+        <thead><tr><th>By</th><th>Adresse</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Aarhus (Skejby)</strong></td><td>Palle Juul Jensens Boulevard 175, 8200 Aarhus N</td></tr>
+          <tr><td><strong>Gødstrup</strong></td><td>Hospitalsparken 15, 7400 Herning</td></tr>
+          <tr><td><strong>Viborg</strong></td><td>Søndersøparken 15, 8800 Viborg</td></tr>
+        </tbody>
+      </table>
+      <p>Ved behov for indlæggelse/akut vurdering – henvis via læge til BUA.</p>
+      <a href="https://www.sundhed.rm.dk/akuthjalp/akut-psykiatrisk-hjalp/" class="link-chip" target="_blank">🔗 Region Midts information om akut psykiatrisk hjælp</a>
+    </div>
+  </div>
+
+  <!-- ═══════════════ BUA INSTRUKS ═══════════════ -->
+  <div class="section" id="sec-bua-instruks">
+    <div class="section-hero">
+      <div class="tag">Instruks · Ikrafttrædelse 01.01.2026</div>
+      <h1>Instruks: Henvisning til BUA</h1>
+      <p>Senest ajourført: 29.04.2026</p>
+    </div>
+
+    <div class="card">
+      <h2>Arbejdsgang ved elektiv henvisning</h2>
+      <ol class="steps">
+        <li><div class="step-content"><div class="step-title">Faglig vurdering</div><div class="step-desc">Medarbejder vurderer at barnet opfylder målgruppekriterierne for BUA: manglende behandlingseffekt, moderate/svære symptomer, betydelig funktionsnedsættelse, eller mistanke om psykisk lidelse.</div></div></li>
+        <li><div class="step-content"><div class="step-title">Sparring med BUA Rådgivningsenhed</div><div class="step-desc">Anvendes ALTID. Drøfter sværhedsgrad, behov for henvisning og evt. fortsat kommunal indsats.</div></div></li>
+        <li><div class="step-content"><div class="step-title">Sparring med sundhedsfaglig ansvarlig</div><div class="step-desc">Sagen drøftes, og der tages stilling til om henvisning er fagligt relevant.</div></div></li>
+        <li><div class="step-content"><div class="step-title">Samtykke indhentes</div><div class="step-desc">Begge forældremyndighedsindehavere + den unge hvis fyldt 15 år. Samtykke til indhentning og videregivelse af oplysninger fra fx PPR, sundhedspleje, læge.</div></div></li>
+        <li><div class="step-content"><div class="step-title">Udarbejd henvisning</div><div class="step-desc">Via den regionale henvisningsformular. Inkluder kontaktinfo, henvendelsesårsag, omfang af kontakter, historik, samtykkeoplysninger og tolkbehov.</div></div></li>
+        <li><div class="step-content"><div class="step-title">Orientér læge</div><div class="step-desc">Borgerens egen læge orienteres via MedCom.</div></div></li>
+        <li><div class="step-content"><div class="step-title">Vurder fortsat behandling</div><div class="step-desc">Konkret vurdering af om barnet fortsat skal følges i tilbuddet, mens familien venter på BUA.</div></div></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ═══════════════ LOKATIONER ═══════════════ -->
+  <div class="section" id="sec-lokationer">
+    <div class="section-hero">
+      <div class="tag">Praktisk</div>
+      <h1>Behandlingslokationer</h1>
+    </div>
+
+    <div class="card">
+      <h2>Grenaa – Østergade 36 (primær lokation)</h2>
+      <p>3 samtalerum, grupperum og venteværelse. <strong>Ikke</strong> kørestolsvenligt (trappe til hoveddøren). Medarbejdere får udleveret nøgle.</p>
+      <p>Bevidst indrettet med LED stearinlys, lanterner, planter, billeder, malebøger, afdæmpede farver og bløde møbler – ikke kommunalt og klinisk.</p>
+      <h3>SOR-ID og P-nummer</h3>
+      <ul>
+        <li>SOR-ID: <strong>1471701000016006</strong></li>
+        <li>P-nummer: <strong>1003355937</strong></li>
+        <li>Kategori 4 behandlingssted (Styrelsen for Patientsikkerhed)</li>
+      </ul>
+      <h3>Rengøring og pedel</h3>
+      <p>Rengøring hver 2. uge (~2 timer). Ad hoc pedelarbejde – kontakt Jacob eller Anna, som kontakter Tom: <a href="mailto:TTL@Norddjurs.dk" style="color:var(--teal-mid)">TTL@Norddjurs.dk</a> / 20 34 98 28.</p>
+    </div>
+
+    <div class="card">
+      <h2>Booking via Outlook</h2>
+      <ul>
+        <li>Lok.Grenaa.Østergade.Samtalerum 1, 2, 3</li>
+        <li>Lok.Grenaa.Østergade.Grupperum</li>
+        <li>Lok.Glesborg.Adm.108–115</li>
+        <li>Lok.Allingåbro.Behandlingstilbud</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Glesborg og Allingåbro</h2>
+      <p><strong>Glesborg:</strong> Administrationsbygningen – mødelokaler ikke særligt indrettet, men kørestolsvenlig. Patienter venter i forhallen.</p>
+      <p><strong>Allingåbro, Markedsplads 6:</strong> Familiehusets lokaler – lille samtalerum til rådighed. Kørestolsvenlig.</p>
+      <div class="alert info">Nøglekort til Glesborg og Allingåbro aktiveres via rådhusbetjentene.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ FAGSYSTEMER ═══════════════ -->
+  <div class="section" id="sec-fagsystemer">
+    <div class="section-hero">
+      <div class="tag">IT</div>
+      <h1>Fagsystemer</h1>
+    </div>
+
+    <div class="card">
+      <h2>JOSA – Journaliseringssystem</h2>
+      <p>Journaliseringssystem for behandlingstilbuddet i Norddjurs Kommune. Sagskortet er opbygget i dialog med JOSA, andre kommuner, lovgivningen og den fælleskommunale datastandard.</p>
+      <div class="alert warn">Kun sundhedspersonale fra behandlingstilbuddet må have adgang til JOSA-sagskortet jf. sundhedsloven § 42 a. Kontakt Jacob Mohr Jensen ved onboarding af ny medarbejder.</div>
+    </div>
+
+    <div class="card">
+      <h2>MedCom</h2>
+      <p>Sikker kommunikation med sundhedsvæsenet. Administrative medarbejdere tjekker dagligt for indkommende korrespondance. Koordinator kvitterer for henvendelser. Lægen adviseres ved:</p>
+      <ul>
+        <li>Opstart af forløb</li>
+        <li>Afslutning af forløb</li>
+        <li>Henvisning til BUA</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Front-Desk (Bookingsystem)</h2>
+      <p>Borgere kan booke forsamtale online. Medarbejdere i afklaringsteamet reserverer tid i Outlook til forsamtaler. Kontakt: Jacob Mohr Jensen (primært) / Sebastian Velling fra Borgerservice.</p>
+      <p>Borgeren modtager SMS-bekræftelse og -påmindelse 24 timer inden.</p>
+    </div>
+
+    <div class="card">
+      <h2>BørnUngeLiv (Plus)</h2>
+      <p>Platform til spørgeskemaer og monitorering. Superadministratorer: Christian Breinholt og Jacob Mohr Jensen.</p>
+      <h3>Spørgeskemaer der altid anvendes</h3>
+      <ul>
+        <li><strong>SDQ</strong> – opstart og afslutning</li>
+        <li><strong>Evaluering</strong> – ved afslutning</li>
+      </ul>
+      <h3>Sporspecifikke (efter faglig vurdering)</h3>
+      <ul>
+        <li>ADHD-RS, RCADS, EAT26, DERS16</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Colibo</h2>
+      <p>Fælles intra-system for region (BUA) og kommunerne til daglig kontakt, videndeling og dokumentudveksling. Giver adgang til STIME-manualer, arbejdsark og vejledninger. Oprettelse: Mona Hesselberg Werdermann, <a href="mailto:monawerd@rm.dk" style="color:var(--teal-mid)">monawerd@rm.dk</a>.</p>
+    </div>
+
+    <div class="card">
+      <h2>Fælleskommunal datastandard</h2>
+      <p>Data registreret i JOSA-sagskortet sendes ind til Sundhedsdatastyrelsen fra 1. april 2026. Spørgsmål: Morten Bue Rath, KL – tlf. 33 70 35 89 / <a href="mailto:mobr@kl.dk" style="color:var(--teal-mid)">mobr@kl.dk</a>.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════ KOMMUNIKATION ═══════════════ -->
+  <div class="section" id="sec-kommunikation">
+    <div class="section-hero">
+      <div class="tag">Praktisk</div>
+      <h1>Kommunikation</h1>
+    </div>
+
+    <div class="card">
+      <h2>Hjemmeside</h2>
+      <p>Underside på Norddjurs Kommunes hjemmeside. Borgere kan booke forsamtale via bookingsystemet. <a href="https://norddjurs.dk/borger-og-selvbetjening/boern-unge-og-familie/behandlingstilbud-til-boern-og-unge-i-psykisk-mistrivsel" class="link-chip" target="_blank">🔗 Link til hjemmeside</a></p>
+      <p>Ændringer: Kontakt Charlotte Sørensen eller Jacob Mohr Jensen.</p>
+    </div>
+
+    <div class="card">
+      <h2>Formidlingsmateriale</h2>
+      <ul>
+        <li><strong>Postkort</strong> – fordelt ved institutioner, afdelinger og praktiserende læger. Produceret af Grefta Tryk via Canva. NB: Behøver opdatering (telefontid og navn).</li>
+        <li><strong>Skriv til fagprofessionelle</strong> – beskrivelse af tilbuddet, målgruppe, kontaktoplysninger og FAQ. Til personalerum og lignende.</li>
+        <li><strong>Plakat</strong> – primært henvendt til unge.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Orienteringsoplæg</h2>
+      <p>Koordinatoren afholder orienteringsmøder hos interne og eksterne samarbejdspartnere (skoler, lægehuse, ungdomsuddannelser). Oplæg og beskrivelse af tilbuddet findes på SharePoint.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════ UNDERRETNING ═══════════════ -->
+  <div class="section" id="sec-underretning">
+    <div class="section-hero">
+      <div class="tag">Vigtig</div>
+      <h1>Skærpet underretningspligt</h1>
+    </div>
+
+    <div class="card">
+      <h2>Overordnede principper</h2>
+      <div class="alert danger"><strong>Skærpet underretningspligt jf. Barnets Lov §133.</strong> Underretning journalføres altid med begrundelse.</div>
+      <ul>
+        <li>Der kan underrettes uden samtykke fra forældre og/eller barnet</li>
+        <li>Underrettes ved problematikker tilbuddet ikke kan imødekomme, og som indikerer behov for særlig støtte</li>
+        <li>Bekymringen bør som udgangspunkt præsenteres for barnet/forældre inden underretningen sendes</li>
+        <li>Forældre involveres <em>ikke</em> ved viden eller mistanke om vold eller overgreb fra forældrene – underrettes straks</li>
+        <li>Kan være telefonisk, skriftligt eller anonymt</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Fremgangsmåde</h2>
+      <ol class="steps">
+        <li><div class="step-content"><div class="step-title">Søg sparring hos sundhedsfaglig ansvarlig</div><div class="step-desc">Inden der arbejdes videre med underretningen</div></div></li>
+        <li><div class="step-content"><div class="step-title">Afklar om underretning er anonym eller ej</div><div class="step-desc">Vær opmærksom på formuleringer der kan afsløre identitet selv ved anonym underretning</div></div></li>
+        <li><div class="step-content"><div class="step-title">Orienter barnet/den unge og forældre</div><div class="step-desc">Medmindre der er viden om vold eller overgreb fra forældrenes side</div></div></li>
+        <li><div class="step-content"><div class="step-title">Send underretning og journalisér</div><div class="step-desc">Følg processen på kommunens hjemmeside under "underret som professionel"</div></div></li>
+      </ol>
+      <h3>Journalen skal indeholde</h3>
+      <ul>
+        <li>At der er foretaget en underretning og dato</li>
+        <li>Hvem der har foretaget den</li>
+        <li>Faglig begrundelse (ikke en gengivelse af underretningen)</li>
+        <li>Om sundhedsfaglig ansvarlig er orienteret</li>
+        <li>Om familien er orienteret, og begrundelse hvis ikke</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══════════════ AFBUD ═══════════════ -->
+  <div class="section" id="sec-afbud">
+    <div class="section-hero">
+      <div class="tag">Praktisk</div>
+      <h1>Afbud &amp; udeblivelse</h1>
+    </div>
+
+    <div class="card">
+      <h2>Retningslinjer</h2>
+      <table class="info-table">
+        <thead><tr><th>Situation</th><th>Handling</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Behandler aflyser</strong></td><td>Aflyses i så god tid som muligt. Borgeren tilbydes ny tid.</td></tr>
+          <tr><td><strong>Borger aflyser</strong></td><td>Borgeren tilbydes ny tid. Ved mere end 2 afbud: dialog om prioritering og om forløbet er relevant nu.</td></tr>
+          <tr><td><strong>Afbud &lt; 2 timer før</strong></td><td>Betragtes som udeblivelse.</td></tr>
+          <tr><td><strong>Borger udebliver (1. gang)</strong></td><td>Behandler forsøger telefonisk kontakt. Sendes skriv om at rette henvendelse. Ingen garanti for erstatningsgang.</td></tr>
+          <tr><td><strong>Borger udebliver (2. gang)</strong></td><td>Forløbet afbrydes. Vurdér om der er grund til underretning.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════════ ONBOARDING ═══════════════ -->
+  <div class="section" id="sec-onboarding">
+    <div class="section-hero">
+      <div class="tag">Ny medarbejder</div>
+      <h1>Onboarding</h1>
+    </div>
+
+    <div class="card">
+      <h2>Tjekliste ved opstart</h2>
+      <ul class="checklist">
+        <li>Leder giver besked til medarbejdere (behandlere og administrative) om den nye medarbejder</li>
+        <li>Koordinator eller leder afholder introduktionsmøde</li>
+        <li>Ny medarbejder orienterer sig i Bekendtgørelsen (BEK nr. 384 af 08/04/2025)</li>
+        <li>Ny medarbejder orienterer sig i Vejledningen (VEJ nr. 9434 af 21/05/2025)</li>
+        <li>Ny medarbejder orienterer sig i Håndbogen</li>
+        <li>Administrativ medarbejder tilmelder til distributionslisten <a href="mailto:Alle-Behandlingsteamet@norddjurs.dk" style="color:var(--teal-mid)">Alle-Behandlingsteamet@norddjurs.dk</a></li>
+        <li>Adgang til Sagskortet LBT i JOSA</li>
+        <li>Oprettelse i BørnUngeLiv</li>
+        <li>Oprettelse i Colibo</li>
+        <li>Nøglekort opdateres (adgang til Familiehuset i Allingåbro)</li>
+        <li>Nøgle til Østergade 36 udleveres</li>
+        <li>Aftale om opstart på STIME-uddannelse</li>
+      </ul>
+      <div class="alert info">Når en medarbejder stopper: Husk at få nøglen til Østergade 36 tilbage.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ FORSAMTALE INSTRUKS ═══════════════ -->
+  <div class="section" id="sec-forsamtale-instruks">
+    <div class="section-hero">
+      <div class="tag">Instruks · Ikrafttrædelse 01.01.2026</div>
+      <h1>Instruks: Forsamtale</h1>
+      <p>Målgruppe: Afklaringsteamet · Udarbejdet af: Charlotte Kondrup</p>
+    </div>
+
+    <div class="card">
+      <h2>Tjekliste til forsamtalen</h2>
+      <h3>Inden opringning</h3>
+      <ul class="checklist">
+        <li>Hav forsamtale-skabelon klar og åben JOSA</li>
+      </ul>
+      <h3>I samtalen</h3>
+      <ul class="checklist">
+        <li>Indhent navn og cpr-nummer på barn/ung</li>
+        <li>Opret sag i JOSA</li>
+        <li>Informér om sundhedsloven og journalisering</li>
+        <li>Informér om orienteringsbrev om behandling af data</li>
+        <li>Informér om at sagen lukkes igen, hvis der guides til anden indsats</li>
+        <li>Informér om at formålet er at afklare målgruppe</li>
+        <li>Informér om at det er en afgrænset indsats</li>
+        <li>Indhent samtykke til at tilgå PPR-sag eller drøfte med rådgiver (hvis relevant)</li>
+        <li>Gennemgå spørgsmål i forsamtale-skabelonen</li>
+      </ul>
+      <h3>Oprettelse i JOSA</h3>
+      <ul class="checklist">
+        <li>Henvendelse</li>
+        <li>Primær henvendelsesårsag</li>
+        <li>Informeret samtykke (evt. flere opgavetyper)</li>
+        <li>Forsamtale</li>
+        <li>Spørgeskemaer (hvis screening)</li>
+        <li>Screeningssamtale (hvis borger skal til screening)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Skabelon til forsamtalen – spørgsmål</h2>
+      <h3>Afdækning af henvendelsen</h3>
+      <ul>
+        <li>Hvad drejer henvendelsen sig om?</li>
+        <li>Hvor længe har udfordringerne stået på?</li>
+        <li>Er der sket noget specifikt op til udfordringerne (skilsmisse, grænseoverskridende adfærd)?</li>
+        <li>Hvordan påvirker udfordringerne hverdagen (skole, fritid, venskaber)?</li>
+        <li>Har der været andre indsatser (PPR, læge, BUA, familieafdeling)?</li>
+        <li>Effekt af tidligere indsatser?</li>
+        <li>Forhold i skolen (fagligt, socialt, fravær)?</li>
+        <li>Forhold i familien (samboende forældre, søskende, psykiske udfordringer)?</li>
+        <li>Grænseoverskridende oplevelser?</li>
+        <li>Basale behov (søvn, kost, motion)?</li>
+        <li>Skærm og sociale medier?</li>
+        <li>Tanker om selvskade eller selvmordstanker?</li>
+        <li>Behov for tolk, misbrug eller anden relevant viden?</li>
+        <li>Motivation for hjælp?</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══════════════ VENTELISTE ═══════════════ -->
+  <div class="section" id="sec-venteliste">
+    <div class="section-hero">
+      <div class="tag">Instruks · Ikrafttrædelse 01.01.2026</div>
+      <h1>Instruks: Venteliste</h1>
+      <p>Målgruppe: Afklaringsteamet</p>
+    </div>
+
+    <div class="card">
+      <h2>Hvornår anvendes venteliste</h2>
+      <p>Hvis opstart af behandling ligger mere end <strong>2 måneder</strong> ud i fremtiden – fx hvis ingen behandler med det relevante STIME-spor har kapacitet.</p>
+    </div>
+
+    <div class="card">
+      <h2>Arbejdsgang</h2>
+      <ol class="steps">
+        <li><div class="step-content"><div class="step-title">Tilbyd ventelisteplads</div><div class="step-desc">Orienter forældre eller den unge om forventet ventetid. Orienter om at kontakte behandler igen ved forværring.</div></div></li>
+        <li><div class="step-content"><div class="step-title">Registrer i tidsopgørelsen</div><div class="step-desc">Under fanen "venteliste" – behandleren på ventelisten er ansvarlig for at holde øje med, hvornår der er plads.</div></div></li>
+        <li><div class="step-content"><div class="step-title">Orienter praktiserende læge</div><div class="step-desc">Via MedCom om tilbud og ventelistestatus.</div></div></li>
+        <li><div class="step-content"><div class="step-title">Ny vurdering inden opstart</div><div class="step-desc">Telefonisk opfølgende screeningssamtale: Er barnet stadig i målgruppen? Motivation? Symptombillede?</div></div></li>
+        <li><div class="step-content"><div class="step-title">Igangsæt forløb eller luk sagen</div><div class="step-desc">Orientér lægen om beslutningen med begrundelse.</div></div></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ═══════════════ AFSLUTNING FØR TID ═══════════════ -->
+  <div class="section" id="sec-afslutning-foer-tid">
+    <div class="section-hero">
+      <div class="tag">Instruks · Ikrafttrædelse 01.01.2026</div>
+      <h1>Instruks: Afslutning af forløb før tid</h1>
+      <p>Senest ajourført: 28.01.2026</p>
+    </div>
+
+    <div class="card">
+      <div class="alert warn">Gælder ved afslutning, der <em>ikke</em> bunder i fagligt planlagt bedring – fx gentagne udeblivelser, ønske om afslutning, eller manglende kontakt.</div>
+      <h2>Arbejdsgang</h2>
+      <ol class="steps">
+        <li><div class="step-content"><div class="step-title">Identificér afslutning</div><div class="step-desc">Gentagne udeblivelser, manglende kontakt eller ønske om afslutning.</div></div></li>
+        <li><div class="step-content"><div class="step-title">Orientér afklaringsteam og sundhedsfaglig leder</div><div class="step-desc">Beskriv årsagen til afslutningen.</div></div></li>
+        <li><div class="step-content"><div class="step-title">Dokumentér i journalen</div><div class="step-desc">At forløbet afsluttes, angivet årsag, dato, og at afklaringsteam + sundhedsfaglig leder er orienteret.</div></div></li>
+        <li><div class="step-content"><div class="step-title">Telefonisk kontakt til forældre</div><div class="step-desc">Afklaringsteam eller sundhedsfaglig leder kontakter familien for at afdække årsag, bekymringer og behov for videre guidning.</div></div></li>
+        <li><div class="step-content"><div class="step-title">Dokumentér efter samtale</div><div class="step-desc">Dato, årsag, relevante oplysninger og konklusion (opfølgning, rådgivning, ny behandler, guidning til anden indsats).</div></div></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SELVMORDSRISIKO ═══════════════ -->
+  <div class="section" id="sec-selvmordsrisiko">
+    <div class="section-hero">
+      <div class="tag">Instruks · Ikrafttrædelse 01.01.2026</div>
+      <h1>Instruks: Selvmordsrisiko og selvskade</h1>
+      <p>Udarbejdet af: Charlotte Kondrup – endnu ikke fuldt færdig</p>
+    </div>
+
+    <div class="card">
+      <div class="alert danger"><strong>Akut risiko:</strong> Handling sker straks – uanset samtykke. Kontakt sundhedsfaglig ansvarlig OMGÅENDE.</div>
+      <h2>Definitioner</h2>
+      <ul>
+        <li><strong>Selvmordsrisiko:</strong> Risiko for at barnet/den unge forsøger at tage sit eget liv</li>
+        <li><strong>Selvskade:</strong> Bevidst handling med fysisk skade på egen krop uden dødelig hensigt</li>
+        <li><strong>Akut risiko:</strong> Umiddelbar fare for liv eller helbred, der kræver øjeblikkelig handling</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Fremgangsmåde</h2>
+      <ol class="steps">
+        <li><div class="step-content"><div class="step-title">Identifikation</div><div class="step-desc">Alle tegn rapporteres straks. Brug observation, samtale og screeningsværktøjer.</div></div></li>
+        <li><div class="step-content"><div class="step-title">Akut vurdering</div><div class="step-desc">Autoriseret psykolog eller sundhedsfaglig leder vurderer risikoens alvor.</div></div></li>
+        <li><div class="step-content"><div class="step-title">Akut handling</div><div class="step-desc">Ved akut risiko – umiddelbar beskyttelse, kontakt til forældre/læge/akut instans. Dokumentér handlinger og faglig begrundelse.</div></div></li>
+        <li><div class="step-content"><div class="step-title">Underretning</div><div class="step-desc">Vurdér altid om der skal underrettes jf. Serviceloven § 154. Koordinér med autoriseret psykolog/sundhedsfaglig leder.</div></div></li>
+        <li><div class="step-content"><div class="step-title">Opfølgning</div><div class="step-desc">Revurdér risiko dagligt eller efter aftale. Planlæg videre behandling. Drøft i supervision.</div></div></li>
+        <li><div class="step-content"><div class="step-title">Sundhedsfaglig leders opfølgning</div><div class="step-desc">Lederen kontakter medarbejderen dagen efter og følger op på, hvordan medarbejderen har det.</div></div></li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h2>Dokumentation</h2>
+      <p>Alle vurderinger, handlinger, samtaler og beslutninger dokumenteres. Notatet skal indeholde:</p>
+      <ul>
+        <li>Observationer og vurdering</li>
+        <li>Akutte handlinger og beslutninger</li>
+        <li>Kontakt til forældre eller myndigheder</li>
+        <li>Underretninger</li>
+        <li>Plan for opfølgning</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══════════════ FORÆLDRE IKKE ORIENTERET ═══════════════ -->
+  <div class="section" id="sec-foraeldre-ikke-orienteret">
+    <div class="section-hero">
+      <div class="tag">Instruks · Ikrafttrædelse 24.03.2026</div>
+      <h1>Instruks: Forløb hvor forældre ikke er orienterede</h1>
+      <p>Senest ajourført: 22.04.2026</p>
+    </div>
+
+    <div class="card">
+      <p>Hos børn/unge der selvskader eller har spiseforstyrrelser er det i udgangspunktet nødvendigt, at forældremyndighedsindehaverne har viden om den unges helbred, så de kan udøve omsorgspligten.</p>
+      <div class="alert warn">I opstarten af et forløb, hvor forældrene ikke er orienterede, skal sundhedspersonen have adgang til sparring om handlemuligheder. Ledelsen bør overveje instruks på området.</div>
+      <h2>I praksis</h2>
+      <ul>
+        <li>Hav en åben dialog med den unge om årsagen til, at forældrene ikke er orienterede</li>
+        <li>Sundhedspersonen skal have adgang til sparring om handlemuligheder</li>
+        <li>Formålet er at sikre klare rammer og støtte den unge bedst muligt</li>
+      </ul>
+      <p>Se også: Instruks for Informeret samtykke (unge over 15 år) og Instruks for Selvmordsrisiko og selvskade.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════ DELEGATION ═══════════════ -->
+  <div class="section" id="sec-delegation">
+    <div class="section-hero">
+      <div class="tag">Jura</div>
+      <h1>Delegationsaftale</h1>
+    </div>
+
+    <div class="card">
+      <h2>Retsgrundlag</h2>
+      <ul>
+        <li>Sundhedsloven § 126 a</li>
+        <li>Autorisationsloven</li>
+        <li>Gældende regler om delegation af sundhedsfaglige opgaver</li>
+      </ul>
+      <div class="alert info">Delegationen forudsætter, at den delegerende er <strong>autoriseret sundhedsperson</strong> og har det overordnede sundhedsfaglige ansvar. Delegationen kan <strong>ikke videre-delegeres</strong>.</div>
+    </div>
+
+    <div class="card">
+      <h2>Hvad kan delegeres (behandling)</h2>
+      <ul class="checklist">
+        <li>Gennemførelse af forsamtaler og screeningssamtaler</li>
+        <li>Gennemførelse af strukturerede samtaleforløb</li>
+        <li>Observation og løbende vurdering af trivsel og funktion</li>
+        <li>Inddragelse af barnets netværk inden for behandlingsplanens rammer</li>
+        <li>Dokumentation i journal</li>
+      </ul>
+      <h3>Delegeres IKKE</h3>
+      <ul>
+        <li>Diagnostiske vurderinger</li>
+        <li>Selvstændig sundhedsfaglig visitationsbeslutning</li>
+        <li>Beslutning om opstart eller afslag på behandling</li>
+        <li>Klinisk prioritering baseret på selvstændigt fagligt skøn</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Eskalation</h2>
+      <p>Modtager af delegation skal straks inddrage den delegerende psykolog ved:</p>
+      <ul>
+        <li>Faglig tvivl</li>
+        <li>Tegn på alvorlig psykisk mistrivsel</li>
+        <li>Selvmordstanker eller selvskade</li>
+        <li>Andre forhold med betydning for patientsikkerhed</li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- #main -->
+
+<script>
+  const sections = {
+    'home': 'sec-home',
+    'grundlag': 'sec-grundlag',
+    'organisering': 'sec-organisering',
+    'roller': 'sec-roller',
+    'kompetence': 'sec-kompetence',
+    'timeregnskab': 'sec-timeregnskab',
+    'journalforing': 'sec-journalforing',
+    'samtykke': 'sec-samtykke',
+    'ansvar-instruks': 'sec-ansvar-instruks',
+    'maalgrupppe': 'sec-maalgrupppe',
+    'borgerrejsen': 'sec-borgerrejsen',
+    'henvendelse': 'sec-henvendelse',
+    'screening': 'sec-screening',
+    'behandling': 'sec-behandling',
+    'booster': 'sec-booster',
+    'opfoelgning': 'sec-opfoelgning',
+    'elektiv-bua': 'sec-elektiv-bua',
+    'akut-bua': 'sec-akut-bua',
+    'bua-instruks': 'sec-bua-instruks',
+    'lokationer': 'sec-lokationer',
+    'fagsystemer': 'sec-fagsystemer',
+    'kommunikation': 'sec-kommunikation',
+    'underretning': 'sec-underretning',
+    'afbud': 'sec-afbud',
+    'onboarding': 'sec-onboarding',
+    'forsamtale-instruks': 'sec-forsamtale-instruks',
+    'venteliste': 'sec-venteliste',
+    'afslutning-foer-tid': 'sec-afslutning-foer-tid',
+    'selvmordsrisiko': 'sec-selvmordsrisiko',
+    'foraeldre-ikke-orienteret': 'sec-foraeldre-ikke-orienteret',
+    'delegation': 'sec-delegation',
+  };
+
+  const labels = {
+    'home': 'Forside',
+    'grundlag': 'Grundlag & formål',
+    'organisering': 'Organisering',
+    'roller': 'Roller & ansvar',
+    'kompetence': 'Kompetenceudvikling',
+    'timeregnskab': 'Timeregnskab',
+    'journalforing': 'Journalføring',
+    'samtykke': 'Informeret samtykke',
+    'ansvar-instruks': 'Ansvar & Kompetencer',
+    'maalgrupppe': 'Målgruppe',
+    'borgerrejsen': 'Borgerrejsen',
+    'henvendelse': 'Henvendelse',
+    'screening': 'Screening',
+    'behandling': 'Behandlingsforløb',
+    'booster': 'Boostersamtale',
+    'opfoelgning': 'Opfølgning & afslutning',
+    'elektiv-bua': 'Elektiv henvisning til BUA',
+    'akut-bua': 'Akut henvisning til BUA',
+    'bua-instruks': 'Instruks: Henvisning til BUA',
+    'lokationer': 'Behandlingslokationer',
+    'fagsystemer': 'Fagsystemer',
+    'kommunikation': 'Kommunikation',
+    'underretning': 'Skærpet underretningspligt',
+    'afbud': 'Afbud & udeblivelse',
+    'onboarding': 'Onboarding',
+    'forsamtale-instruks': 'Instruks: Forsamtale',
+    'venteliste': 'Instruks: Venteliste',
+    'afslutning-foer-tid': 'Afslutning før tid',
+    'selvmordsrisiko': 'Selvmordsrisiko & selvskade',
+    'foraeldre-ikke-orienteret': 'Forældre ikke orienteret',
+    'delegation': 'Delegationsaftale',
+  };
+
+  let currentSection = 'home';
+
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebar-overlay').classList.toggle('open');
+  }
+
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebar-overlay').classList.remove('open');
+  }
+    // Hide all sections
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+    // Show target
+    const secId = sections[key];
+    if (secId) {
+      document.getElementById(secId).classList.add('active');
+      // Update breadcrumb
+      document.getElementById('breadcrumb').innerHTML = `<strong>${labels[key] || key}</strong>`;
+      // Activate nav item
+      document.querySelectorAll('.nav-item').forEach(n => {
+        if (n.getAttribute('onclick') === `show('${key}')`) n.classList.add('active');
+      });
+      // Scroll main to top
+      document.getElementById('main').scrollTo(0, 0);
+      closeSidebar();
+    }
+    currentSection = key;
+    // Clear search
+    document.getElementById('search').value = '';
+    removeHighlights();
+  }
+
+  function removeHighlights() {
+    document.querySelectorAll('mark').forEach(m => {
+      const parent = m.parentNode;
+      parent.replaceChild(document.createTextNode(m.textContent), m);
+      parent.normalize();
+    });
+  }
+
+  function searchContent(query) {
+    removeHighlights();
+    if (!query || query.length < 2) return;
+
+    const q = query.toLowerCase();
+    let found = null;
+
+    // Search through all sections
+    for (const [key, secId] of Object.entries(sections)) {
+      const sec = document.getElementById(secId);
+      if (!sec) continue;
+      const text = sec.textContent.toLowerCase();
+      if (text.includes(q)) {
+        if (!found) found = key;
+      }
+    }
+
+    if (found) {
+      show(found);
+      // Highlight in the active section
+      setTimeout(() => {
+        const sec = document.getElementById(sections[found]);
+        highlightText(sec, query);
+        // Scroll to first mark
+        const firstMark = sec.querySelector('mark');
+        if (firstMark) firstMark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 50);
+    }
+  }
+
+  function highlightText(node, query) {
+    if (node.nodeType === 3) {
+      const idx = node.textContent.toLowerCase().indexOf(query.toLowerCase());
+      if (idx >= 0) {
+        const before = node.textContent.substring(0, idx);
+        const match = node.textContent.substring(idx, idx + query.length);
+        const after = node.textContent.substring(idx + query.length);
+        const mark = document.createElement('mark');
+        mark.textContent = match;
+        const frag = document.createDocumentFragment();
+        frag.appendChild(document.createTextNode(before));
+        frag.appendChild(mark);
+        frag.appendChild(document.createTextNode(after));
+        node.parentNode.replaceChild(frag, node);
+        return true;
+      }
+    } else if (node.nodeType === 1 && node.nodeName !== 'SCRIPT' && node.nodeName !== 'STYLE') {
+      Array.from(node.childNodes).forEach(child => highlightText(child, query));
+    }
+  }
+</script>
+</body>
+</html>
