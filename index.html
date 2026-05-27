@@ -518,77 +518,105 @@
     .role-grid { grid-template-columns: 1fr; }
   }
 
-  /* ── MOBILE ── */
+  /* ── MOBILE TOGGLE BUTTON ── */
   #menu-toggle {
     display: none;
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 500;
+    bottom: 24px;
+    right: 24px;
+    z-index: 1000;
     background: var(--teal-dark);
     color: #fff;
     border: none;
     border-radius: 50%;
-    width: 52px;
-    height: 52px;
-    font-size: 1.4rem;
+    width: 56px;
+    height: 56px;
+    font-size: 1.5rem;
     cursor: pointer;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 
+  /* ── SIDEBAR OVERLAY ── */
   #sidebar-overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.45);
-    z-index: 200;
+    background: rgba(0,0,0,0.5);
+    z-index: 600;
   }
+  #sidebar-overlay.open { display: block; }
 
+  /* ── MOBILE BREAKPOINT ── */
   @media (max-width: 768px) {
-    body { display: block; }
-
-    #sidebar {
-      position: fixed;
-      top: 0; left: 0;
-      height: 100%;
-      z-index: 300;
-      transform: translateX(-100%);
-      transition: transform 0.25s ease;
-      width: 280px;
-      min-width: unset;
+    body {
+      display: block;
+      overflow-x: hidden;
     }
 
+    /* Sidebar slides in over content */
+    #sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 85vw;
+      max-width: 320px;
+      min-width: unset;
+      z-index: 700;
+      transform: translateX(-110%);
+      transition: transform 0.28s ease;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
     #sidebar.open { transform: translateX(0); }
 
-    #sidebar-overlay.open { display: block; }
+    /* Nav items bigger tap targets */
+    .nav-item {
+      padding: 13px 24px;
+      font-size: 0.95rem;
+    }
+    .nav-item.sub { padding-left: 38px; font-size: 0.88rem; }
 
-    #menu-toggle { display: flex; align-items: center; justify-content: center; }
+    /* Main takes full width, scrolls normally */
+    #main {
+      width: 100%;
+      min-height: 100vh;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
 
-    #main { width: 100%; }
-
-    .topbar { padding: 14px 16px; }
-
+    .topbar {
+      padding: 14px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
     .search-wrap { display: none; }
 
-    .section { padding: 16px 16px 0; }
+    .section { padding: 16px 16px 80px; }
 
     .section-hero { padding: 22px 20px; }
-    .section-hero h1 { font-size: 1.5rem; }
+    .section-hero h1 { font-size: 1.4rem; }
 
-    .card { padding: 20px 18px; }
+    .card { padding: 18px 16px; }
 
     .home-grid { grid-template-columns: 1fr; gap: 12px; }
     .role-grid { grid-template-columns: 1fr; }
 
-    .info-table { font-size: 0.82rem; }
+    .info-table { font-size: 0.8rem; display: block; overflow-x: auto; }
     .info-table th, .info-table td { padding: 8px 10px; }
+
+    /* Show toggle button */
+    #menu-toggle { display: flex; align-items: center; justify-content: center; }
   }
 </style>
 </head>
 <body>
 
-<div id="sidebar-overlay" onclick="closeSidebar()"></div>
-<button id="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div id="sidebar-overlay" onclick="closeSidebar()" ontouchend="closeSidebar()"></div>
+<button id="menu-toggle" onclick="toggleSidebar()" ontouchend="toggleSidebar()">☰</button>
 
 <!-- SIDEBAR -->
 <nav id="sidebar">
@@ -1971,8 +1999,10 @@
   let currentSection = 'home';
 
   function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('open');
-    document.getElementById('sidebar-overlay').classList.toggle('open');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('open');
   }
 
   function closeSidebar() {
